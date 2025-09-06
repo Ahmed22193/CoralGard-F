@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CoralGuard - Reef Map</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+      :root {
+        --primary-color: #11a4d4;
+        --secondary-color: #0d87ab;
+        --accent-color: #f0f9ff;
+        --text-primary: #1e293b;
+        --text-secondary: #475569;
+        --background-color: #f8fafc;
+      }
+      body {
+        font-family: "Public Sans", sans-serif;
+      }
+      .active-nav-link {
+        color: var(--primary-color);
+        position: relative;
+      }
+      .active-nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body class="bg-background-color text-primary">
+    <div
+      class="relative flex size-full min-h-screen flex-col overflow-x-hidden"
+    >
+      <header
+        class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-gray-200 bg-white/80 px-10 py-3 backdrop-blur-sm"
+      >
+        <div class="flex items-center gap-3 text-primary">
+          <svg
+            class="h-8 w-8 text-[var(--primary-color)]"
+            fill="none"
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <h1 class="text-xl font-bold tracking-tight">CoralGuard</h1>
+        </div>
+        <nav class="hidden md:flex items-center gap-8">
+          <a
+            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
+            href="#"
+            >Dashboard</a
+          >
+          <a class="text-sm font-medium active-nav-link" href="#">Reef Map</a>
+          <a
+            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
+            href="#"
+            >Research</a
+          >
+          <a
+            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
+            href="#"
+            >Community</a
+          >
+          <a
+            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
+            href="#"
+            >About</a
+          >
+        </nav>
+        <div class="flex items-center gap-4">
+          <button
+            class="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-secondary transition-colors hover:bg-gray-200 hover:text-primary"
+          >
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="absolute top-1 right-1 flex h-3 w-3">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--primary-color)] opacity-75"
+              ></span>
+              <span
+                class="relative inline-flex rounded-full h-3 w-3 bg-[var(--primary-color)]"
+              ></span>
+            </span>
+          </button>
+          <button>
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjcFJ3d9-_J3C7paaXcQl-OAxFBa6_8eKlyBIzTxOb7axGH01-CvuumiNTnsNgszxlGLo0vdq_WcmbIn8jF0qrQLJfH41GNesnq5kUQVxxCo1hJx2CAaBgEBV7ZQXRHTJPeGSlapTXeskgo5IQfvLbaab_ZcDJbPq1kcj4E4yn6WyPMcmHPWUmIemscnf0VA9r7bcd84kGfHiesLBXpK4qUwfvrpVKcORf4FGnKg2XmiiSxDgEwpwEkJkg5wTzl7CUVfiGn7N0X-SH');
+              "
+            ></div>
+          </button>
+        </div>
+      </header>
+      <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mx-auto max-w-7xl">
+          <div class="mb-8">
+            <h2 class="text-4xl font-bold tracking-tight text-primary">
+              Reef Map
+            </h2>
+            <p class="mt-2 text-lg text-secondary">
+              Explore vital coral reef data from locations around the world.
+            </p>
+          </div>
+          <div
+            class="group h-[600px] w-full overflow-hidden rounded-xl shadow-lg"
+          >
+            <div class="relative h-full w-full">
+              <div
+                class="absolute inset-0 bg-cover bg-center"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwGHJpr0JioO93s8WzkISohCWe9n7eWKLugtk-IqzsAhkbfIOBwtflUFwUxhwbOZ119XyL7lHYrEJ0oq_w19X3vj6I5wtKt3aXTKdLwHrJ4Pevh4fP-aJz031flchOHh1sL_yItIYy4pRCjBAH7cfKCAXpL_xzLqxCm-LuhcPxoDhCCzhGZ_VxhC3guxn4WkD478__-BPOnUUCDMvzlxlzvmNLutfB9XGJswwpQgeDqQOhnWkY-_oGimyKrPB7pYKz8AzGj1y6nVCB');
+                "
+              >
+                <div class="absolute inset-0 bg-black/10"></div>
+              </div>
+
+              <!-- ///////////////////////////////////////////search///////////////////////////////////////////// -->
+              <div class="absolute top-5 left-5 w-full max-w-sm">
+                <label class="relative block">
+                  <span class="sr-only">Search</span>
+                  <span
+                    class="absolute inset-y-0 left-0 flex items-center pl-3"
+                  >
+                    <span class="material-symbols-outlined text-secondary"
+                      >search</span
+                    >
+                  </span>
+                  <input
+                    class="form-input block w-full rounded-md border-gray-300 bg-white py-3 pl-10 pr-3 text-base placeholder:text-secondary shadow-md focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+                    placeholder="Search for a reef location..."
+                    type="text"
+                  />
+                </label>
+              </div>
+              <div
+                class="absolute bottom-5 right-5 flex flex-col items-end gap-2"
+              >
+                <div class="flex flex-col rounded-lg bg-white shadow-md">
+                  <button
+                    class="flex h-12 w-12 items-center justify-center border-b border-gray-200 text-secondary transition-colors hover:bg-gray-50 hover:text-primary"
+                  >
+                    <span class="material-symbols-outlined">add</span>
+                  </button>
+                  <button
+                    class="flex h-12 w-12 items-center justify-center text-secondary transition-colors hover:bg-gray-50 hover:text-primary"
+                  >
+                    <span class="material-symbols-outlined">remove</span>
+                  </button>
+                </div>
+                <button
+                  class="flex h-12 w-12 items-center justify-center rounded-lg bg-white text-secondary shadow-md transition-colors hover:bg-gray-50 hover:text-primary"
+                >
+                  <span class="material-symbols-outlined">my_location</span>
+                </button>
+              </div>
+
+              <!-- /////////////////////////////////////////////////pins//////////////////////////////// -->
+              <div class="absolute" style="top: 45%; left: 75%">
+                <div class="group/pin relative"  id="great-barrier-reef">
+
+
+                  <div
+                    class="h-5 w-5 rounded-full bg-[var(--primary-color)] ring-4 ring-white/50 transition-transform group-hover/pin:scale-110"
+                  ></div>
+                  <div
+                    class="absolute bottom-full mb-3 hidden w-48 rounded-md bg-white p-3 text-sm shadow-lg group-hover/pin:block"
+                  >
+                    <p class="font-bold text-primary">Great Barrier Reef</p>
+                    <p class="text-red-500">Status: Bleached Area</p>
+                    <p class="text-secondary">Last updated: 2 days ago</p>
+                  </div>
+                </div>
+              </div>
+              <div class="absolute" style="top: 35%; left: 55%">
+
+                <div class="group/pin relative"  id="red-sea-reef">
+                  <div
+                    class="h-5 w-5 rounded-full bg-[var(--primary-color)] ring-4 ring-white/50 transition-transform group-hover/pin:scale-110"
+                  ></div>
+                  <div
+                    class="absolute bottom-full mb-3 hidden w-48 rounded-md bg-white p-3 text-sm shadow-lg group-hover/pin:block"
+                  >
+                    <p class="font-bold text-primary">Red Sea Coral Reef</p>
+                    <p class="text-green-500">Status: Healthy</p>
+                    <p class="text-secondary">Last updated: 1 week ago</p>
+                  </div>
+                </div>
+              </div>
+              <div class="absolute" style="top: 50%; left: 15%">
+
+                <div class="group/pin relative"  id="caribbean-reefs">
+                  <div
+                    class="h-5 w-5 rounded-full bg-yellow-400 ring-4 ring-white/50 transition-transform group-hover/pin:scale-110"
+                  ></div>
+                  <div
+                    class="absolute bottom-full mb-3 hidden w-48 rounded-md bg-white p-3 text-sm shadow-lg group-hover/pin:block"
+                  >
+                    <p class="font-bold text-primary">Caribbean Reefs</p>
+                    <p class="text-yellow-500">Status: Under Observation</p>
+                    <p class="text-secondary">Last updated: 3 days ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="../JS/map.js"></script>
+  </body>
+</html>

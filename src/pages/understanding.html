@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Public+Sans%3Awght%40400%3B500%3B700%3B900"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <title>Understanding</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+      :root {
+        --primary-color: #11a4d4;
+        --secondary-color: #ff6b6b;
+        --accent-color: #4ecdc4;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes glow {
+        0% {
+          box-shadow: 0 0 5px rgba(17, 164, 212, 0.5);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(17, 164, 212, 0.8);
+        }
+        100% {
+          box-shadow: 0 0 5px rgba(17, 164, 212, 0.5);
+        }
+      }
+      @keyframes colorChange {
+        0% {
+          color: #11a4d4;
+        }
+        33% {
+          color: #ff6b6b;
+        }
+        66% {
+          color: #4ecdc4;
+        }
+        100% {
+          color: #11a4d4;
+        }
+      }
+      .zoomable {
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .zoomable:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+      .float-animation {
+        animation: float 4s ease-in-out infinite;
+      }
+      .pulse-animation {
+        animation: pulse 3s ease-in-out infinite;
+      }
+      .glow-animation {
+        animation: glow 3s ease-in-out infinite;
+      }
+      .color-change {
+        animation: colorChange 8s linear infinite;
+      }
+      .bubble {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+        opacity: 0.6;
+        z-index: 0;
+      }
+      .hero-text {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .section-title {
+        position: relative;
+        display: inline-block;
+      }
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #11a4d4, #4ecdc4, #ff6b6b);
+        transition: width 0.5s ease;
+        border-radius: 2px;
+      }
+      .section-title:hover::after {
+        width: 100%;
+      }
+      .coral-fact {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+      }
+      .coral-fact:hover {
+        border-left-color: var(--primary-color);
+        transform: translateX(5px);
+      }
+      .water-effect {
+        position: relative;
+        overflow: hidden;
+      }
+      .water-effect::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.4) 0%,
+          rgba(255, 255, 255, 0) 60%
+        );
+        transform: rotate(30deg);
+        transition: all 0.7s ease;
+        opacity: 0;
+      }
+      .water-effect:hover::before {
+        opacity: 1;
+        transform: rotate(0deg);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 text-slate-800 overflow-x-hidden"
+    style="font-family: 'Public Sans', 'Noto Sans', sans-serif"
+  >
+    <div
+      id="bubbles-container"
+      class="fixed inset-0 pointer-events-none z-0"
+    ></div>
+    <div
+      class="relative flex size-full min-h-screen flex-col group/design-root"
+    >
+      <div class="layout-container flex h-full grow flex-col relative z-10">
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 px-10 py-3 sticky top-0 bg-slate-50/80 backdrop-blur-lg z-20"
+        >
+          <div class="flex items-center gap-4 text-[var(--primary-color)]">
+            <div class="size-6 float-animation">
+              <svg
+                fill="none"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2
+              class="text-slate-900 text-xl font-bold leading-tight tracking-[-0.015em]"
+            >
+              CoralGuard
+            </h2>
+          </div>
+          <nav
+            class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600"
+          >
+            <a
+              class="hover:text-[var(--primary-color)] transition-colors transform hover:scale-110"
+              href="/#home"
+              >Home</a
+            >
+            <a
+              class="nav-link text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
+              href="../pages/Coral_History.html"
+              >Coral History</a
+            >
+            <a
+              class="hover:text-[var(--primary-color)] transition-colors transform hover:scale-110"
+              href="/src/pages/teamMembers.html"
+              >Team Members</a
+            >
+            <a
+              class="hover:text-[var(--primary-color)] transition-colors transform hover:scale-110"
+              href="/#about"
+              >About</a
+            >
+            <a
+              class="hover:text-[var(--primary-color)] transition-colors transform hover:scale-110"
+              href="/#contact"
+              >Contact</a
+            >
+          </nav>
+          <div class="flex items-center gap-4">
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-[var(--primary-color)] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-sky-600 transition-colors pulse-animation"
+            >
+              <span class="truncate">Donate</span>
+            </button>
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 zoomable"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBdXCRnQetvuOl7Bula8YxflhXk_rdgcNiPL543Ao--8yQWRXiFCiteNDo1ClqzmcKIRrhB8tpigGjFQMuQScRkI3VNHqDmUnHF6CvuFjKQ6dF5hQTUeDPCtir08Rev5A3K5JeTy_3kDowIbyHwOXkvqJYcPpjiX3X7jb8mC4o1rejTbra8k_LmG_ZtCKYZ9xFKyT7COdlqff9DZe1Jotc7CjDM-1A6cZos-w-VkUwxjJuviPxtp8aBH3D3M2NF-bWyP-1Pt6k-oXYk');
+              "
+            ></div>
+          </div>
+        </header>
+        <main class="flex-1 px-4 sm:px-6 lg:px-8 py-12">
+          <div class="mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+              <h1
+                id="hero-title"
+                class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight hero-text color-change"
+              >
+                Understanding Our Coral Reefs
+              </h1>
+              <p
+                id="hero-subtitle"
+                class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto"
+              >
+                Explore the different states of coral reefs and learn how we can
+                protect these vital underwater ecosystems.
+              </p>
+              <div class="mt-8 flex justify-center">
+                <button
+                  id="start-animation"
+                  class="bg-[var(--primary-color)] text-white px-6 py-3 rounded-full font-semibold glow-animation hover:scale-105 transition-transform"
+                >
+                  Explore the Magic
+                </button>
+              </div>
+            </div>
+            <section id="reef-states" class="mb-20">
+              <h2
+                class="text-3xl font-bold text-slate-900 tracking-tight mb-8 section-title"
+              >
+                Coral Reef States
+              </h2>
+              <div class="space-y-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div
+                    id="img-healthy"
+                    class="w-full h-64 bg-center bg-no-repeat bg-cover rounded-2xl shadow-lg zoomable water-effect"
+                    style="
+                      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBx76_XO-yTJMfz_K8D7ruqaXlTDtUj-6sSIaaWNSwzGElIycrTb82aukpMRTYVH_tASFAZIzPVfLYaN_e_63p9R6e80NW_6RaRQFyWZkzgPKNJWpaZFi6U_6mY56RXfvAyTlgO_qRvb55sGsxpBEKWFwbufB9whpTvOAKtxorL9OEjl2qD6S1Cop6ZWhfFdOcVrK0EyluW3600Lng5aOxBh-WrQa2nNxfAbdvxtLCKuWIPp6q-BsyE7EF1FSfk-wv5xg6MIY6Q1bws');
+                    "
+                  ></div>
+                  <div>
+                    <h3
+                      id="healthy-coral"
+                      class="text-2xl font-bold text-slate-800 cursor-pointer hover:text-[var(--primary-color)] transition-colors coral-fact"
+                    >
+                      Healthy Coral
+                    </h3>
+                    <p class="mt-2 text-slate-600">
+                      Vibrant and colorful, teeming with life. Healthy corals
+                      are resilient and form the foundation of diverse and
+                      thriving ecosystems.
+                    </p>
+                    <button
+                      class="mt-4 bg-[var(--accent-color)] text-white px-4 py-2 rounded-lg text-sm pulse-animation"
+                    >
+                      Learn How to Protect
+                    </button>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div class="md:order-2">
+                    <div
+                      id="img-bleached"
+                      class="w-full h-64 bg-center bg-no-repeat bg-cover rounded-2xl shadow-lg zoomable water-effect"
+                      style="
+                        background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAtvW8V9wDauNF4XSVL0YfKIXybK_LyEd8rYo0R0Adlyb2CDh4MLzl9N6FowTgiLdEStKmBzhR3n5ZelnM0hJsLEWMmTpuXYgMQHRGX5eDOPOYIHbvSDKEMN0MbSfAVPONswBEpjpUBtMs1aG4Mn_5pw0iFt1cNMCpCUBwwWDPEP_KiKi0r2Mr1eXRdZm-nG1I-MrNos7KtRlqQeISbLVoYXrmannTH6yljBLloDmP3sfM5hmyCWl0Ik2i8PjTiSHs3phIGSFPm8qpI');
+                      "
+                    ></div>
+                  </div>
+                  <div>
+                    <h3
+                      id="bleached-coral"
+                      class="text-2xl font-bold text-slate-800 cursor-pointer hover:text-[var(--secondary-color)] transition-colors coral-fact"
+                    >
+                      Bleached Coral
+                    </h3>
+                    <p class="mt-2 text-slate-600">
+                      Pale and stressed, a sign of distress often caused by
+                      rising ocean temperatures. Bleaching can be reversed if
+                      environmental conditions improve in time.
+                    </p>
+                    <button
+                      class="mt-4 bg-amber-500 text-white px-4 py-2 rounded-lg text-sm pulse-animation"
+                    >
+                      See Recovery Stories
+                    </button>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div
+                    id="img-dead"
+                    class="w-full h-64 bg-center bg-no-repeat bg-cover rounded-2xl shadow-lg zoomable water-effect"
+                    style="
+                      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD25h_QuUBJ8gN9CJZkjEsB-mYLf_mJ3FXsUM8tzuNGQdrGGnIH-CbjaCikRYfc9RdJ_sPCLow9B1iTDFCi7JybKwfnOJzp4dYhEDcqDj6EOsf1Ehor6a0hDn9hpWN_bKri-kRJyPERTxUBg6BQPJ2uORmfQ7-4HG74nmTboZX_pCxfsIfKfqG1f3HAPGcAINnSbrmLjHA2UuYmFLucrQH4Iiibz0bdlceMQHj7TPlMJsYer_7h3AeZvfrvj6015yZgKw5QME-OW_wG');
+                    "
+                  ></div>
+                  <div>
+                    <h3
+                      id="dead-coral"
+                      class="text-2xl font-bold text-slate-800 cursor-pointer hover:text-[var(--secondary-color)] transition-colors coral-fact"
+                    >
+                      Dead Coral
+                    </h3>
+                    <p class="mt-2 text-slate-600">
+                      White and brittle, covered in algae, and no longer
+                      supporting life. Dead reefs can erode, impacting coastal
+                      protection and the entire ecosystem.
+                    </p>
+                    <button
+                      class="mt-4 bg-[var(--secondary-color)] text-white px-4 py-2 rounded-lg text-sm pulse-animation"
+                    >
+                      Restoration Efforts
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section id="tips-facts" class="mb-20">
+              <h2
+                class="text-3xl font-bold text-slate-900 tracking-tight mb-8 section-title"
+              >
+                Tips &amp; Facts
+              </h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                  id="tip1"
+                  class="bg-white rounded-2xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 ease-in-out cursor-pointer water-effect"
+                >
+                  <div
+                    class="w-full h-40 bg-center bg-no-repeat bg-cover"
+                    style="
+                      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqzHdkRxopSejLdHldR_CxK0RhaQObLQ6e9wuEHJx4UVwBmfHUa2Rda4z9fGRHhuS-oyD7EyLn2DJUjUEIGYja07fbvnWi9F9Vw2FgA4NpjkLJIt4mK6t6S9wuTluR_R14k557wsILotxyMn_6sbzL9JAiCRt1s7l32qJlknh3BRt0LqzzZmdJBO8HHk0JoD1Y_6Klyzw2oN7fMI0jQhjiyySQpNe7MUPUlTNT_KIs_EMbao6amut-HM-5PsHOOd-xyw_RWw6m5ECH');
+                    "
+                  ></div>
+                  <div class="p-6">
+                    <p class="text-slate-700 font-semibold">
+                      Coral reefs support 25% of all marine life.
+                    </p>
+                  </div>
+                </div>
+                <div
+                  id="tip2"
+                  class="bg-white rounded-2xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 ease-in-out cursor-pointer water-effect"
+                >
+                  <div
+                    class="w-full h-40 bg-center bg-no-repeat bg-cover"
+                    style="
+                      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRd88cIs5HgoVe_ul-oPSJwPO88XqBM8EzK3PlQcgo1YfW2YVa8jH-HsgwKfP8FaAq4e57foUXHMMCkG0CGp4R5FfjvU5UtGbhXycpD_12D4rH02KfjuUQPEjeNnbE-Y5hkWur3IlwmM5ntX_WSd7MYgf9VGgmLJqqko0ckgYw7dHA9W6BLW-Y2hO3QxE195XOCR-Vyyim0aG_RQA-ersRWPf0kHZ4Tt5rGrZqrhNu4qCoYrNJaPeIqRfx3RSN_jGS89k-z1Dv5u8D');
+                    "
+                  ></div>
+                  <div class="p-6">
+                    <p class="text-slate-700 font-semibold">
+                      Protecting reefs helps maintain critical biodiversity.
+                    </p>
+                  </div>
+                </div>
+                <div
+                  id="tip3"
+                  class="bg-white rounded-2xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 ease-in-out cursor-pointer water-effect"
+                >
+                  <div
+                    class="w-full h-40 bg-center bg-no-repeat bg-cover"
+                    style="
+                      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZemvJPWW7T-SYyNtTB7w1l0t805kYaBcXJo7VOoTBpXcgNT-G1Izpaf1s7-CcuC7lv0R7JqdN6cT7GKD7gFNdDg_g1niAoDYRjb4s3CfFSAI0kt8lv5rnsYb1yjjdZmokzYX24uVHNZS0B2lCwqmOpxkpP59c_AmJYipX-Lo6iIsShEYH75bSFKa_fKR8ma8cp5DmRel-zCZI8QVC5-cQ6DYZ5vkXCQem9733aJA3fbX0WJxMWscH0DyFli758xjWfadYKY-v_ftM');
+                    "
+                  ></div>
+                  <div class="p-6">
+                    <p class="text-slate-700 font-semibold">
+                      Sustainable tourism is key to reef health.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section id="did-you-know">
+              <div
+                class="bg-white p-8 rounded-2xl shadow-lg border border-slate-200/50 cursor-pointer water-effect"
+                id="did-you-know-box"
+              >
+                <h2
+                  class="text-3xl font-bold text-slate-900 tracking-tight mb-4"
+                >
+                  Did You Know?
+                </h2>
+                <div class="flex items-start gap-4">
+                  <span
+                    class="material-symbols-outlined text-4xl text-[var(--primary-color)] mt-1 float-animation"
+                  >
+                    info
+                  </span>
+                  <p id="did-you-know-text" class="text-slate-600 text-lg">
+                    Coral reefs are often called the 'rainforests of the sea'
+                    because they support such a high diversity of life. They
+                    provide shelter, breeding grounds, and food for countless
+                    marine species. Protecting these vital ecosystems is crucial
+                    for the health of our oceans and the planet.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script>
+      function createBubbles() {
+        const bubblesContainer = document.getElementById("bubbles-container");
+        const bubblesCount = 20;
+        for (let i = 0; i < bubblesCount; i++) {
+          const bubble = document.createElement("div");
+          bubble.classList.add("bubble");
+          const size = Math.random() * 40 + 10;
+          bubble.style.width = `${size}px`;
+          bubble.style.height = `${size}px`;
+          bubble.style.left = `${Math.random() * 100}%`;
+          bubble.style.top = `${Math.random() * 100}%`;
+          const duration = Math.random() * 15 + 10;
+          const delay = Math.random() * 5;
+          bubble.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+          bubblesContainer.appendChild(bubble);
+        }
+      }
+      const healthyCoral = document.getElementById("healthy-coral");
+      const bleachedCoral = document.getElementById("bleached-coral");
+      const deadCoral = document.getElementById("dead-coral");
+      const imgHealthy = document.getElementById("img-healthy");
+      const imgBleached = document.getElementById("img-bleached");
+      const imgDead = document.getElementById("img-dead");
+      function zoomImage(img) {
+        img.style.transform = "scale(1.15)";
+        img.style.boxShadow = "0 15px 30px rgba(0, 0, 0, 0.2)";
+        setTimeout(() => {
+          img.style.transform = "scale(1)";
+          img.style.boxShadow = "";
+        }, 1000);
+      }
+      healthyCoral.addEventListener("click", () => zoomImage(imgHealthy));
+      bleachedCoral.addEventListener("click", () => zoomImage(imgBleached));
+      deadCoral.addEventListener("click", () => zoomImage(imgDead));
+      imgHealthy.addEventListener("click", () => zoomImage(imgHealthy));
+      imgBleached.addEventListener("click", () => zoomImage(imgBleached));
+      imgDead.addEventListener("click", () => zoomImage(imgDead));
+      const tips = ["tip1", "tip2", "tip3"];
+      tips.forEach((id) => {
+        const tip = document.getElementById(id);
+        tip.addEventListener("mouseenter", () => {
+          tip.style.backgroundColor = "#f0f8ff";
+        });
+        tip.addEventListener("mouseleave", () => {
+          tip.style.backgroundColor = "white";
+        });
+        tip.addEventListener("click", () => {
+          tip.style.transform = "scale(0.97) translateY(-5px)";
+          setTimeout(() => {
+            tip.style.transform = "";
+          }, 300);
+        });
+      });
+      const didYouKnow = document.getElementById("did-you-know-text");
+      const didYouKnowBox = document.getElementById("did-you-know-box");
+      let originalText = didYouKnow.textContent;
+      didYouKnowBox.addEventListener("click", () => {
+        if (didYouKnow.textContent === originalText) {
+          didYouKnow.textContent =
+            "Coral reefs cover less than 1% of the ocean floor, but support 25% of all marine life! They are among the most biodiverse ecosystems on Earth.";
+          didYouKnowBox.style.background =
+            "linear-gradient(135deg, #f0f9ff, #e6f7ff)";
+        } else {
+          didYouKnow.textContent = originalText;
+          didYouKnowBox.style.background = "white";
+        }
+      });
+      const heroTitle = document.getElementById("hero-title");
+      const heroSubtitle = document.getElementById("hero-subtitle");
+      const startButton = document.getElementById("start-animation");
+      window.addEventListener("load", () => {
+        heroTitle.style.opacity = "0";
+        heroTitle.style.transform = "translateY(20px)";
+        heroTitle.style.transition = "opacity 1s ease, transform 1s ease";
+        heroSubtitle.style.opacity = "0";
+        heroSubtitle.style.transform = "translateY(20px)";
+        heroSubtitle.style.transition =
+          "opacity 1s ease 0.3s, transform 1s ease 0.3s";
+        setTimeout(() => {
+          heroTitle.style.opacity = "1";
+          heroTitle.style.transform = "translateY(0)";
+          heroSubtitle.style.opacity = "1";
+          heroSubtitle.style.transform = "translateY(0)";
+        }, 300);
+        createBubbles();
+      });
+      startButton.addEventListener("click", () => {
+        const images = [imgHealthy, imgBleached, imgDead];
+        images.forEach((img, index) => {
+          setTimeout(() => {
+            img.style.transform = "scale(1.2)";
+            img.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.3)";
+            setTimeout(() => {
+              img.style.transform = "scale(1)";
+              img.style.boxShadow = "";
+            }, 1000);
+          }, index * 500);
+        });
+        heroTitle.classList.add("pulse-animation");
+        setTimeout(() => {
+          heroTitle.classList.remove("pulse-animation");
+        }, 3000);
+      });
+      function checkScroll() {
+        const elements = document.querySelectorAll(
+          ".zoomable, .section-title, .coral-fact"
+        );
+        elements.forEach((element) => {
+          const position = element.getBoundingClientRect();
+          if (
+            position.top < window.innerHeight * 0.75 &&
+            position.bottom >= 0
+          ) {
+            element.style.opacity = "1";
+            element.style.transform = "translateY(0)";
+          }
+        });
+      }
+      document
+        .querySelectorAll(".zoomable, .section-title, .coral-fact")
+        .forEach((element) => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(20px)";
+          element.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+        });
+      window.addEventListener("scroll", checkScroll);
+      window.addEventListener("load", checkScroll);
+    </script>
+  </body>
+</html>

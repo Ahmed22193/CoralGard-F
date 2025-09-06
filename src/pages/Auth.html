@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Public+Sans%3Awght%40400%3B500%3B700%3B900"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <title>CoralGuard - Auth</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+      :root {
+        --primary-color: #0b95da;
+        --secondary-color: #0dcaf0;
+      }
+      body {
+        font-family: "Public Sans", "Noto Sans", sans-serif;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes wave {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-5px);
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+      .float-animation {
+        animation: float 6s ease-in-out infinite;
+      }
+      .pulse-animation {
+        animation: pulse 2s ease-in-out infinite;
+      }
+      .fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      .shake {
+        animation: shake 0.5s;
+      }
+      .form-input:focus {
+        box-shadow: 0 0 0 3px rgba(11, 149, 218, 0.3);
+      }
+      .coral-element {
+        position: absolute;
+        background: linear-gradient(
+          45deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        border-radius: 50%;
+        opacity: 0.7;
+        z-index: 1;
+        filter: blur(2px);
+      }
+      .ocean-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 20%;
+        background: linear-gradient(
+          90deg,
+          rgba(11, 149, 218, 0.4) 0%,
+          rgba(13, 202, 240, 0.6) 50%,
+          rgba(11, 149, 218, 0.4) 100%
+        );
+        background-size: 200% 100%;
+        animation: wave 10s ease-in-out infinite;
+        z-index: 2;
+      }
+      .star {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: white;
+        border-radius: 50%;
+        z-index: 1000;
+        opacity: 0;
+      }
+      .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        display: none;
+      }
+      .alert-success {
+        background-color: #d1fae5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+      }
+      .alert-error {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-gray-900 group/design-root overflow-x-hidden"
+    >
+      <div
+        class="absolute inset-0 z-0 opacity-20"
+        style="
+          background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+          background-position: center;
+          background-size: cover;
+        "
+      ></div>
+      <div class="absolute inset-0 z-0 bg-black/50"></div>
+      <div class="ocean-wave"></div>
+      <div id="floating-elements"></div>
+      <div class="relative z-10 flex h-full grow flex-col">
+        <header
+          class="flex items-center justify-between whitespace-nowrap px-10 py-4"
+        >
+          <a
+            class="flex items-center gap-3 text-white hover:scale-105 transition-transform"
+            href="#"
+          >
+            <svg
+              class="h-8 w-8 text-[var(--primary-color)] float-animation"
+              fill="none"
+              viewBox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+            <h1 class="text-white text-xl font-bold tracking-tighter">
+              CoralGuard
+            </h1>
+          </a>
+        </header>
+        <main class="flex flex-1 items-center justify-center py-12 px-4">
+          <div
+            class="w-full max-w-md mx-auto fade-in"
+            style="animation-delay: 0.3s"
+          >
+            <div
+              class="bg-gray-900/60 backdrop-blur-lg rounded-xl shadow-2xl overflow-hidden border border-white/10 transform hover:scale-105 transition-all duration-700"
+            >
+              <div class="flex justify-center mt-4">
+                <button
+                  id="login-tab"
+                  class="px-6 py-2 font-semibold text-white bg-[var(--primary-color)] rounded-l-lg"
+                >
+                  Login
+                </button>
+                <button
+                  id="signup-tab"
+                  class="px-6 py-2 font-semibold text-white bg-white/10 rounded-r-lg"
+                >
+                  Sign Up
+                </button>
+              </div>
+              <div class="p-8 sm:p-10">
+                <div id="alertBox" class="alert"></div>
+                <form class="space-y-6" id="login-form">
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-300"
+                      for="login-email"
+                      >Email address</label
+                    >
+                    <div class="mt-2">
+                      <input
+                        id="login-email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="Enter Your Email"
+                        required
+                        class="form-input block w-full rounded-md border-0 bg-white/5 py-2.5 px-4 text-white placeholder:text-gray-500 focus:bg-white/10 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-300"
+                      for="login-password"
+                      >Password</label
+                    >
+                    <div class="mt-2">
+                      <input
+                        id="login-password"
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="Enter The Password"
+                        required
+                        class="form-input block w-full rounded-md border-0 bg-white/5 py-2.5 px-4 text-white placeholder:text-gray-500 focus:bg-white/10 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    id="login-button"
+                    type="submit"
+                    class="flex w-full justify-center rounded-md bg-[var(--primary-color)] px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-color)] transition-all transform hover:scale-105"
+                  >
+                    Log In
+                  </button>
+                </form>
+                <form class="space-y-6 hidden" id="signup-form">
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-300"
+                      for="signup-name"
+                      >Full Name</label
+                    >
+                    <div class="mt-2">
+                      <input
+                        id="signup-name"
+                        name="name"
+                        type="text"
+                        placeholder="Enter Your Name"
+                        required
+                        class="form-input block w-full rounded-md border-0 bg-white/5 py-2.5 px-4 text-white placeholder:text-gray-500 focus:bg-white/10 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-300"
+                      for="signup-email"
+                      >Email address</label
+                    >
+                    <div class="mt-2">
+                      <input
+                        id="signup-email"
+                        name="email"
+                        type="email"
+                        placeholder="Enter Your Email"
+                        required
+                        class="form-input block w-full rounded-md border-0 bg-white/5 py-2.5 px-4 text-white placeholder:text-gray-500 focus:bg-white/10 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-300"
+                      for="signup-password"
+                      >Password</label
+                    >
+                    <div class="mt-2">
+                      <input
+                        id="signup-password"
+                        name="password"
+                        type="password"
+                        placeholder="Enter Password"
+                        required
+                        class="form-input block w-full rounded-md border-0 bg-white/5 py-2.5 px-4 text-white placeholder:text-gray-500 focus:bg-white/10 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    id="signup-button"
+                    type="submit"
+                    class="flex w-full justify-center rounded-md bg-[var(--primary-color)] px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-color)] transition-all transform hover:scale-105"
+                  >
+                    Sign Up
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="../JS/Auth.js"></script>
+  </body>
+</html>

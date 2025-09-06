@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Public+Sans%3Awght%40400%3B500%3B700%3B900"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <meta charset="utf-8" />
+    <title>For public</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <style type="text/tailwindcss">
+      :root {
+        --primary-color: #11a3d4;
+        --secondary-color: #f0f3f4;
+        --text-primary: #111618;
+        --text-secondary: #617f89;
+        --healthy-color: #22c55e;
+        --bleached-color: #f59e0b;
+        --dead-color: #ef4444;
+      }
+      @keyframes growHealthy {
+        from {
+          stroke-dasharray: 0, 100;
+        }
+        to {
+          stroke-dasharray: 75, 25;
+        }
+      }
+
+      @keyframes growBleached {
+        from {
+          stroke-dasharray: 0, 100;
+        }
+        to {
+          stroke-dasharray: 20, 80;
+        }
+      }
+      @keyframes growDead {
+        from {
+          stroke-dasharray: 0, 100;
+        }
+        to {
+          stroke-dasharray: 5, 95;
+        }
+      }
+      .pie-animate .healthy-path {
+        animation: growHealthy 1.5s ease-out forwards;
+      }
+      .pie-animate .bleached-path {
+        animation: growBleached 1.5s ease-out forwards;
+        animation-delay: 0.5s;
+      }
+      .pie-animate .dead-path {
+        animation: growDead 1.5s ease-out forwards;
+        animation-delay: 1s;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .float-animation {
+        animation: float 3s ease-in-out infinite;
+      }
+      .pulse-animation {
+        animation: pulse 2s ease-in-out infinite;
+      }
+      .slide-in-animation {
+        animation: slideIn 0.5s ease-out forwards;
+      }
+      .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .upload-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(17, 163, 212, 0.3);
+        transition: all 0.3s ease;
+      }
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #11a3d4;
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #11a3d4;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .image-preview {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        margin-top: 16px;
+        display: none;
+      }
+      .drag-active {
+        background-color: #f0f9ff;
+        border-color: #11a3d4;
+        border-style: solid;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 text-gray-800"
+    style="font-family: 'Public Sans', 'Noto Sans', sans-serif"
+  >
+    <div
+      class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-slate-200 px-10 py-4 shadow-sm bg-white"
+        >
+          <div class="flex items-center gap-4 text-cyan-500">
+            <div class="size-8 float-animation">
+              <svg
+                fill="none"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2
+              class="text-gray-800 text-xl font-bold leading-tight tracking-[-0.015em] slide-in-animation"
+            >
+              CoralGuard
+            </h2>
+          </div>
+          <nav class="flex items-center gap-8">
+            <a
+              onclick="window.location.href='/index.html'"
+              class="nav-link text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
+              href="/#home"
+              >Home</a
+            >
+            <a
+              class="nav-link text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
+              href="/#about"
+              >About</a
+            >
+            <a
+              class="nav-link text-cyan-500 text-sm font-semibold leading-normal"
+              href="#"
+              >For the Public</a
+            >
+            <a
+              class="nav-link text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
+              href="/src/pages/teamMembers.html"
+              >Teeam Members</a
+            >
+            <a
+              class="nav-link text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
+              href="/src/pages/Coral_History.html"
+              >Coral History</a
+            >
+            <a
+              class="nav-link text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
+              href="/#contact"
+              >Contact</a
+            >
+          </nav>
+          <div class="flex gap-3 registrations">
+            <button
+              id="signupBtn"
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-cyan-500 text-white text-sm font-bold leading-normal tracking-[0.015em] upload-button"
+              onclick="window.location.href='./Auth.html'"
+            >
+              <span class="truncate">Sign Up</span>
+            </button>
+            <button
+              id="loginBtn"
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-slate-100 text-gray-800 text-sm font-bold leading-normal tracking-[0.015em] upload-button"
+              onclick="window.location.href='./Auth.html'"
+            >
+              <span class="truncate">Log In</span>
+            </button>
+          </div>
+        </header>
+        <main class="flex-1 px-10 lg:px-20 py-12">
+          <div
+            class="layout-content-container mx-auto flex max-w-6xl flex-col gap-8"
+          >
+            <div class="flex flex-col gap-3 text-center">
+              <h1
+                class="text-gray-900 text-4xl font-bold leading-tight tracking-tighter slide-in-animation"
+              >
+                Coral Reef Analysis Dashboard
+              </h1>
+              <p
+                class="text-gray-600 text-lg font-normal leading-normal max-w-3xl mx-auto slide-in-animation"
+              >
+                Upload images of coral reefs to analyze their health using our
+                AI-powered detection. View detailed results and data
+                visualizations below.
+              </p>
+            </div>
+            <div class="flex flex-col p-4">
+              <div
+                id="dropArea"
+                class="flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-slate-300 bg-white px-6 py-16 text-center shadow-sm pulse-animation"
+              >
+                <div class="flex flex-col items-center gap-3">
+                  <div
+                    class="bg-cyan-100 text-cyan-600 rounded-full p-3 float-animation"
+                  >
+                    <span class="material-symbols-outlined !text-4xl"
+                      >upload_file</span
+                    >
+                  </div>
+                  <p
+                    class="text-gray-900 text-xl font-bold leading-tight tracking-[-0.015em]"
+                  >
+                    Drag and drop or browse to upload images
+                  </p>
+                  <p class="text-gray-500 text-sm font-normal leading-normal">
+                    Supported formats: JPG, PNG. Max file size: 10MB
+                  </p>
+                </div>
+
+                <input
+                  type="file"
+                  id="fileInput"
+                  class="hidden"
+                  accept=".jpg,.jpeg,.png"
+                />
+                <button
+                  onclick="document.getElementById('fileInput').click()"
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-cyan-500 text-white text-base font-bold leading-normal tracking-[0.015em] upload-button"
+                >
+                  <span class="truncate">Upload Image</span>
+                </button>
+                <img
+                  id="imagePreview"
+                  class="image-preview"
+                  alt="Image preview"
+                />
+                <div
+                  id="fileValidation"
+                  class="hidden mt-4 p-3 bg-yellow-100 text-yellow-800 rounded-lg text-sm"
+                >
+                  Please select a valid JPG or PNG image under 10MB.
+                </div>
+                <div id="loadingIndicator" class="hidden mt-4">
+                  <div class="spinner"></div>
+                  <p class="text-gray-600 mt-2">
+                    Analyzing image, please wait...
+                  </p>
+                </div>
+                <div
+                  id="errorMessage"
+                  class="hidden mt-4 p-3 bg-red-100 text-red-700 rounded-lg"
+                >
+                  Error uploading image. Please try again.
+                </div>
+                <div
+                  id="successMessage"
+                  class="hidden mt-4 p-3 bg-green-100 text-green-700 rounded-lg"
+                >
+                  Image successfully uploaded and analyzed!
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div
+                class="stats-card flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300"
+              >
+                <div
+                  class="text-[var(--healthy-color)] flex items-center justify-center rounded-full bg-green-100 shrink-0 size-12"
+                >
+                  <span class="material-symbols-outlined"
+                    >health_and_safety</span
+                  >
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p
+                    id="healthy-percent"
+                    class="text-gray-900 text-2xl font-bold leading-normal"
+                  >
+                    75%
+                  </p>
+                  <p class="text-gray-500 text-sm font-medium leading-normal">
+                    Healthy
+                  </p>
+                </div>
+              </div>
+              <div
+                class="stats-card flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300"
+              >
+                <div
+                  class="text-[var(--bleached-color)] flex items-center justify-center rounded-full bg-amber-100 shrink-0 size-12"
+                >
+                  <span class="material-symbols-outlined">warning</span>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p
+                    id="bleached-percent"
+                    class="text-gray-900 text-2xl font-bold leading-normal"
+                  >
+                    20%
+                  </p>
+                  <p class="text-gray-500 text-sm font-medium leading-normal">
+                    Bleached
+                  </p>
+                </div>
+              </div>
+              <div
+                class="stats-card flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300"
+              >
+                <div
+                  class="text-[var(--dead-color)] flex items-center justify-center rounded-full bg-red-100 shrink-0 size-12"
+                >
+                  <span class="material-symbols-outlined">cancel</span>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p
+                    id="dead-percent"
+                    class="text-gray-900 text-2xl font-bold leading-normal"
+                  >
+                    5%
+                  </p>
+                  <p class="text-gray-500 text-sm font-medium leading-normal">
+                    Dead
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    
+    <script src="../JS/forPuplic.js"></script>
+  </body>
+</html>
