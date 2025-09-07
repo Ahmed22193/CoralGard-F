@@ -1,229 +1,286 @@
+
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>CoralGuard - Reef Map</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700;900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <style type="text/tailwindcss">
-      :root {
-        --primary-color: #11a4d4;
-        --secondary-color: #0d87ab;
-        --accent-color: #f0f9ff;
-        --text-primary: #1e293b;
-        --text-secondary: #475569;
-        --background-color: #f8fafc;
-      }
-      body {
-        font-family: "Public Sans", sans-serif;
-      }
-      .active-nav-link {
-        color: var(--primary-color);
-        position: relative;
-      }
-      .active-nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: var(--primary-color);
-      }
-    </style>
-  </head>
-  <body class="bg-background-color text-primary">
-    <div
-      class="relative flex size-full min-h-screen flex-col overflow-x-hidden"
-    >
-      <header
-        class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-gray-200 bg-white/80 px-10 py-3 backdrop-blur-sm"
-      >
-        <div class="flex items-center gap-3 text-primary">
-          <svg
-            class="h-8 w-8 text-[var(--primary-color)]"
-            fill="none"
-            viewBox="0 0 48 48"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-          <h1 class="text-xl font-bold tracking-tight">CoralGuard</h1>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CoralGuard — Red Sea Advanced Map</title>
+
+  <!-- Tailwind (fast styling) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Leaflet.heat for heatmap -->
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+  <!-- Chart.js for mini charts in popups -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    html,body,#mapApp { height: 100%; margin:0; padding:0; font-family: Inter, system-ui, sans-serif; }
+    #map { height: 70vh; border-radius: 0.75rem; box-shadow: 0 8px 30px rgba(2,6,23,0.08); }
+    .controls { gap: .75rem; }
+    .alert-box { display:none; position: absolute; top: 1rem; left: 50%; transform: translateX(-50%); z-index: 9999; }
+    .timeline-label { font-weight:600; }
+    .leaflet-popup-content canvas { width: 280px !important; height: 120px !important; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <div id="mapApp" class="min-h-screen flex flex-col p-6">
+    <!-- header -->
+    <header class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div class="text-blue-600 text-2xl font-extrabold">CoralGuard</div>
+        <div class="text-sm text-gray-500">— Red Sea Reef Guardian (Interactive Map)</div>
+      </div>
+      <div class="flex items-center gap-3 controls">
+        <input id="searchInput" type="text" placeholder="ابحث عن منطقة (مثال: Hurghada)" class="px-3 py-2 rounded-md border shadow-sm w-60" />
+        <button id="searchBtn" class="px-3 py-2 bg-blue-600 text-white rounded-md shadow">بحث</button>
+
+        <div class="flex items-center gap-2 bg-white px-3 py-2 rounded-md shadow">
+          <span class="text-xs text-gray-500">السنة</span>
+          <input id="yearSlider" type="range" min="2018" max="2025" value="2023" step="1" class="w-40" />
+          <span id="yearLabel" class="ml-2 timeline-label">2023</span>
         </div>
-        <nav class="hidden md:flex items-center gap-8">
-          <a
-            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
-            href="#"
-            >Dashboard</a
-          >
-          <a class="text-sm font-medium active-nav-link" href="#">Reef Map</a>
-          <a
-            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
-            href="#"
-            >Research</a
-          >
-          <a
-            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
-            href="#"
-            >Community</a
-          >
-          <a
-            class="text-sm font-medium text-secondary transition-colors hover:text-[var(--primary-color)]"
-            href="#"
-            >About</a
-          >
-        </nav>
-        <div class="flex items-center gap-4">
-          <button
-            class="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-secondary transition-colors hover:bg-gray-200 hover:text-primary"
-          >
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="absolute top-1 right-1 flex h-3 w-3">
-              <span
-                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--primary-color)] opacity-75"
-              ></span>
-              <span
-                class="relative inline-flex rounded-full h-3 w-3 bg-[var(--primary-color)]"
-              ></span>
-            </span>
-          </button>
-          <button>
-            <div
-              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-              style="
-                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjcFJ3d9-_J3C7paaXcQl-OAxFBa6_8eKlyBIzTxOb7axGH01-CvuumiNTnsNgszxlGLo0vdq_WcmbIn8jF0qrQLJfH41GNesnq5kUQVxxCo1hJx2CAaBgEBV7ZQXRHTJPeGSlapTXeskgo5IQfvLbaab_ZcDJbPq1kcj4E4yn6WyPMcmHPWUmIemscnf0VA9r7bcd84kGfHiesLBXpK4qUwfvrpVKcORf4FGnKg2XmiiSxDgEwpwEkJkg5wTzl7CUVfiGn7N0X-SH');
-              "
-            ></div>
-          </button>
-        </div>
-      </header>
-      <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mx-auto max-w-7xl">
-          <div class="mb-8">
-            <h2 class="text-4xl font-bold tracking-tight text-primary">
-              Reef Map
-            </h2>
-            <p class="mt-2 text-lg text-secondary">
-              Explore vital coral reef data from locations around the world.
-            </p>
-          </div>
-          <div
-            class="group h-[600px] w-full overflow-hidden rounded-xl shadow-lg"
-          >
-            <div class="relative h-full w-full">
-              <div
-                class="absolute inset-0 bg-cover bg-center"
-                style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwGHJpr0JioO93s8WzkISohCWe9n7eWKLugtk-IqzsAhkbfIOBwtflUFwUxhwbOZ119XyL7lHYrEJ0oq_w19X3vj6I5wtKt3aXTKdLwHrJ4Pevh4fP-aJz031flchOHh1sL_yItIYy4pRCjBAH7cfKCAXpL_xzLqxCm-LuhcPxoDhCCzhGZ_VxhC3guxn4WkD478__-BPOnUUCDMvzlxlzvmNLutfB9XGJswwpQgeDqQOhnWkY-_oGimyKrPB7pYKz8AzGj1y6nVCB');
-                "
-              >
-                <div class="absolute inset-0 bg-black/10"></div>
-              </div>
+      </div>
+    </header>
 
-              <!-- ///////////////////////////////////////////search///////////////////////////////////////////// -->
-              <div class="absolute top-5 left-5 w-full max-w-sm">
-                <label class="relative block">
-                  <span class="sr-only">Search</span>
-                  <span
-                    class="absolute inset-y-0 left-0 flex items-center pl-3"
-                  >
-                    <span class="material-symbols-outlined text-secondary"
-                      >search</span
-                    >
-                  </span>
-                  <input
-                    class="form-input block w-full rounded-md border-gray-300 bg-white py-3 pl-10 pr-3 text-base placeholder:text-secondary shadow-md focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)]"
-                    placeholder="Search for a reef location..."
-                    type="text"
-                  />
-                </label>
-              </div>
-              <div
-                class="absolute bottom-5 right-5 flex flex-col items-end gap-2"
-              >
-                <div class="flex flex-col rounded-lg bg-white shadow-md">
-                  <button
-                    class="flex h-12 w-12 items-center justify-center border-b border-gray-200 text-secondary transition-colors hover:bg-gray-50 hover:text-primary"
-                  >
-                    <span class="material-symbols-outlined">add</span>
-                  </button>
-                  <button
-                    class="flex h-12 w-12 items-center justify-center text-secondary transition-colors hover:bg-gray-50 hover:text-primary"
-                  >
-                    <span class="material-symbols-outlined">remove</span>
-                  </button>
-                </div>
-                <button
-                  class="flex h-12 w-12 items-center justify-center rounded-lg bg-white text-secondary shadow-md transition-colors hover:bg-gray-50 hover:text-primary"
-                >
-                  <span class="material-symbols-outlined">my_location</span>
-                </button>
-              </div>
-
-              <!-- /////////////////////////////////////////////////pins//////////////////////////////// -->
-              <div class="absolute" style="top: 45%; left: 75%">
-                <div class="group/pin relative"  id="great-barrier-reef">
-
-
-                  <div
-                    class="h-5 w-5 rounded-full bg-[var(--primary-color)] ring-4 ring-white/50 transition-transform group-hover/pin:scale-110"
-                  ></div>
-                  <div
-                    class="absolute bottom-full mb-3 hidden w-48 rounded-md bg-white p-3 text-sm shadow-lg group-hover/pin:block"
-                  >
-                    <p class="font-bold text-primary">Great Barrier Reef</p>
-                    <p class="text-red-500">Status: Bleached Area</p>
-                    <p class="text-secondary">Last updated: 2 days ago</p>
-                  </div>
-                </div>
-              </div>
-              <div class="absolute" style="top: 35%; left: 55%">
-
-                <div class="group/pin relative"  id="red-sea-reef">
-                  <div
-                    class="h-5 w-5 rounded-full bg-[var(--primary-color)] ring-4 ring-white/50 transition-transform group-hover/pin:scale-110"
-                  ></div>
-                  <div
-                    class="absolute bottom-full mb-3 hidden w-48 rounded-md bg-white p-3 text-sm shadow-lg group-hover/pin:block"
-                  >
-                    <p class="font-bold text-primary">Red Sea Coral Reef</p>
-                    <p class="text-green-500">Status: Healthy</p>
-                    <p class="text-secondary">Last updated: 1 week ago</p>
-                  </div>
-                </div>
-              </div>
-              <div class="absolute" style="top: 50%; left: 15%">
-
-                <div class="group/pin relative"  id="caribbean-reefs">
-                  <div
-                    class="h-5 w-5 rounded-full bg-yellow-400 ring-4 ring-white/50 transition-transform group-hover/pin:scale-110"
-                  ></div>
-                  <div
-                    class="absolute bottom-full mb-3 hidden w-48 rounded-md bg-white p-3 text-sm shadow-lg group-hover/pin:block"
-                  >
-                    <p class="font-bold text-primary">Caribbean Reefs</p>
-                    <p class="text-yellow-500">Status: Under Observation</p>
-                    <p class="text-secondary">Last updated: 3 days ago</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+    <!-- alert box -->
+    <div id="alertBox" class="alert-box bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg">
+      ⚠ تحذير: مناطق في حالة حرجة (انذار)
     </div>
-    <script src="../JS/map.js"></script>
-  </body>
+
+    <!-- map -->
+    <div id="map" class="mb-6"></div>
+
+    <!-- legend & layer control area -->
+    <div class="flex gap-4 items-start">
+      <div class="bg-white p-4 rounded-md shadow w-full md:w-1/3">
+        <h3 class="font-semibold mb-2">Legend</h3>
+        <div class="flex items-center gap-2 mb-1"><span class="w-4 h-4 bg-green-500 rounded-sm inline-block"></span> صحي</div>
+        <div class="flex items-center gap-2 mb-1"><span class="w-4 h-4 bg-yellow-400 rounded-sm inline-block"></span> تحت المراقبة</div>
+        <div class="flex items-center gap-2 mb-1"><span class="w-4 h-4 bg-red-500 rounded-sm inline-block"></span> حالة حرجة</div>
+      </div>
+
+      <div class="bg-white p-4 rounded-md shadow w-full md:w-2/3">
+        <h3 class="font-semibold mb-2">Layers</h3>
+        <label class="inline-flex items-center mr-4"><input id="toggleReefs" type="checkbox" checked class="mr-2">Reefs</label>
+        <label class="inline-flex items-center mr-4"><input id="toggleHeat" type="checkbox" checked class="mr-2">Heatmap (Threat)</label>
+        <label class="inline-flex items-center mr-4"><input id="toggleSST" type="checkbox" class="mr-2">Sea Surface Temperature (mock)</label>
+      </div>
+    </div>
+
+    <footer class="mt-6 text-sm text-gray-500">
+      <!-- تم إزالة جملة Demo data كما طلبت -->
+    </footer>
+  </div>
+
+  <!-- audio for alert -->
+  <audio id="alertAudio" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+
+<script>
+const reefData = [
+  {
+    id: "sharm",
+    name: "Sharm El-Sheikh Reef",
+    coords: [27.9158, 34.3299],
+    lastUpdate: "2025-06-10",
+    sst: { "2018": 27.2, "2019": 27.9, "2020": 28.3, "2021": 29.1, "2022": 29.6, "2023": 30.1, "2024": 30.4, "2025": 30.8 },
+    threat: { "2018": 0.05, "2019": 0.08, "2020": 0.12, "2021": 0.25, "2022": 0.35, "2023": 0.55, "2024": 0.6, "2025": 0.7 }
+  },
+  {
+    id: "hurghada",
+    name: "Hurghada Reef",
+    coords: [27.2579, 33.8116],
+    lastUpdate: "2025-03-02",
+    sst: { "2018": 26.9, "2019": 27.4, "2020": 27.9, "2021": 28.6, "2022": 29.0, "2023": 29.4, "2024": 29.9, "2025": 30.2 },
+    threat: { "2018": 0.02, "2019": 0.05, "2020": 0.08, "2021": 0.12, "2022": 0.18, "2023": 0.25, "2024": 0.28, "2025": 0.33 }
+  },
+  {
+    id: "sudan",
+    name: "Sudan Reef (southern Red Sea)",
+    coords: [19.6, 37.2],
+    lastUpdate: "2024-11-18",
+    sst: { "2018": 28.5, "2019": 29.0, "2020": 29.6, "2021": 30.3, "2022": 30.8, "2023": 31.2, "2024": 31.6, "2025": 31.9 },
+    threat: { "2018": 0.1, "2019": 0.2, "2020": 0.28, "2021": 0.35, "2022": 0.45, "2023": 0.62, "2024": 0.7, "2025": 0.82 }
+  },
+  {
+    id: "neom",
+    name: "NEOM Coastal Reef",
+    coords: [27.3, 35.0],
+    lastUpdate: "2025-07-01",
+    sst: { "2018": 26.4, "2019": 26.8, "2020": 27.0, "2021": 27.6, "2022": 28.4, "2023": 28.9, "2024": 29.3, "2025": 29.7 },
+    threat: { "2018": 0.03, "2019": 0.05, "2020": 0.06, "2021": 0.09, "2022": 0.12, "2023": 0.18, "2024": 0.22, "2025": 0.25 }
+  }
+];
+
+const map = L.map('map', { zoomControl: true }).setView([22.0, 38.0], 5);
+
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+const reefsLayerGroup = L.layerGroup().addTo(map);
+const sstLayerGroup = L.layerGroup();
+let heatLayer = null;
+
+function statusFromScore(score) {
+  if (score >= 0.6) return { text: "حالة حرجة", color: "red" };
+  if (score >= 0.3) return { text: "تحت المراقبة", color: "orange" };
+  return { text: "صحي", color: "green" };
+}
+
+function renderForYear(year) {
+  reefsLayerGroup.clearLayers();
+  sstLayerGroup.clearLayers();
+  const heatPoints = [];
+
+  reefData.forEach(feature => {
+    const score = feature.threat[String(year)];
+    const sst = feature.sst[String(year)];
+    const st = statusFromScore(score);
+
+    const marker = L.circleMarker(feature.coords, {
+      radius: 8 + score * 10,
+      color: "#fff",
+      weight: 2,
+      fillColor: st.color,
+      fillOpacity: 0.9
+    });
+
+    const popupId = `chart-${feature.id}-${year}`;
+    const popupHtml = `
+      <div style="min-width:280px">
+        <h3 style="margin:0 0 .25rem;font-weight:700">${feature.name}</h3>
+        <div>الحالة: <span style="color:${st.color};font-weight:700">${st.text}</span></div>
+        <div>درجة حرارة سطح البحر (SST): <b>${sst.toFixed(1)}°C</b></div>
+        <div>آخر تحديث: ${feature.lastUpdate}</div>
+        <canvas id="${popupId}" width="280" height="120" style="margin-top:.5rem"></canvas>
+      </div>
+    `;
+
+    marker.bindPopup(popupHtml, { maxWidth: 320 });
+
+    marker.on('popupopen', () => {
+      const years = Object.keys(feature.threat).sort();
+      const values = years.map(y => feature.threat[y]);
+      const ctx = document.getElementById(popupId);
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [{
+            label: 'Threat score',
+            data: values,
+            fill: true,
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239,68,68,0.15)',
+            tension: 0.3,
+            pointRadius: 3
+          }]
+        },
+        options: {
+          responsive: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { min: 0, max: 1, ticks: { stepSize: 0.25 } }
+          }
+        }
+      });
+    });
+
+    marker.addTo(reefsLayerGroup);
+
+    const fillOpacity = Math.min((sst - 26) / 6, 0.6);
+    const sstCircle = L.circle(feature.coords, {
+      radius: 10000 + (sst - 26) * 12000,
+      color: null,
+      fillColor: `rgba(255,0,0,${fillOpacity})`,
+      fillOpacity: 0.12
+    }).bindTooltip(`${feature.name} — SST ${sst.toFixed(1)}°C`);
+    sstCircle.addTo(sstLayerGroup);
+
+    heatPoints.push([feature.coords[0], feature.coords[1], Math.min(Math.max(score, 0.01), 1)]);
+  });
+
+  if (heatLayer) map.removeLayer(heatLayer);
+  heatLayer = L.heatLayer(heatPoints, { radius: 40, blur: 30, maxZoom: 12, max: 1.0 });
+
+  if (document.getElementById('toggleHeat').checked) heatLayer.addTo(map);
+  if (document.getElementById('toggleReefs').checked) reefsLayerGroup.addTo(map);
+  if (document.getElementById('toggleSST').checked) sstLayerGroup.addTo(map);
+
+  const criticalCount = reefData.filter(f => f.threat[String(year)] >= 0.6).length;
+  handleAlert(criticalCount);
+}
+
+const yearSlider = document.getElementById('yearSlider');
+const yearLabel = document.getElementById('yearLabel');
+
+yearSlider.addEventListener('input', (e) => {
+  const y = e.target.value;
+  yearLabel.textContent = y;
+  renderForYear(y);
+});
+
+document.getElementById('toggleReefs').addEventListener('change', (e) => {
+  if (e.target.checked) map.addLayer(reefsLayerGroup); else map.removeLayer(reefsLayerGroup);
+});
+document.getElementById('toggleHeat').addEventListener('change', (e) => {
+  if (e.target.checked) { if (heatLayer) map.addLayer(heatLayer); } else { if (heatLayer) map.removeLayer(heatLayer); }
+});
+document.getElementById('toggleSST').addEventListener('change', (e) => {
+  if (e.target.checked) map.addLayer(sstLayerGroup); else map.removeLayer(sstLayerGroup);
+});
+
+document.getElementById('searchBtn').addEventListener('click', performSearch);
+document.getElementById('searchInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') performSearch(); });
+
+function performSearch() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!q) return;
+  const found = reefData.find(f => f.name.toLowerCase().includes(q));
+  if (!found) {
+    alert('الموقع غير موجود في البيانات التجريبية');
+    return;
+  }
+  map.setView(found.coords, 12, { animate: true });
+  reefsLayerGroup.eachLayer(layer => {
+    if (layer.getLatLng && layer.getLatLng().lat === found.coords[0] && layer.getLatLng().lng === found.coords[1]) {
+      layer.openPopup();
+    }
+  });
+}
+
+const alertBox = document.getElementById('alertBox');
+const alertAudio = document.getElementById('alertAudio');
+let alertPlaying = false;
+
+function handleAlert(count) {
+  if (count > 0) {
+    alertBox.style.display = 'block';
+    alertBox.textContent = `⚠ تحذير: ${count} منطقة في حالة حرجة!`;
+    try {
+      if (!alertPlaying) {
+        alertAudio.currentTime = 0;
+        alertAudio.play().catch(() => {/* autoplay blocked until user interaction */});
+        alertPlaying = true;
+      }
+    } catch(e) { console.warn(e); }
+  } else {
+    alertBox.style.display = 'none';
+    try { alertAudio.pause(); alertPlaying = false; } catch(e) {}
+  }
+}
+
+// Render initial year
+renderForYear(parseInt(yearSlider.value, 10));
+</script>
+
+</body>
 </html>

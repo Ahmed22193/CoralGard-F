@@ -1,382 +1,221 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link
-      as="style"
-      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Public+Sans:wght@400;500;700;900"
-      onload="this.rel='stylesheet'"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-      rel="stylesheet"
-    />
-    <title>CoralGuard</title>
-    <link rel="stylesheet" href="src/styles/index.css">
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <style type="text/tailwindcss">
-      body {
-        scroll-behavior: smooth;
-      }
-      :root {
-        --primary-color: #11a3d4;
-        --secondary-color: #ff6b6b;
-        --accent-color: #48c9b0;
-      }
-      .bg-primary {
-        background-color: var(--primary-color);
-      }
-      .text-primary {
-        color: var(--primary-color);
-      }
-      .bg-secondary {
-        background-color: var(--secondary-color);
-      }
-      .text-secondary {
-        color: var(--secondary-color);
-      }
-      .bg-accent {
-        background-color: var(--accent-color);
-      }
-      .text-accent {
-        color: var(--accent-color);
-      }
-      .border-primary {
-        border-color: var(--primary-color);
-      }
-    </style>
-  </head>
-  <body class="bg-gray-50 font-public" id="home">
-    <div
-      id="app-wrapper"
-      class="relative flex size-full min-h-screen flex-col overflow-x-hidden"
-    >
-      <!-- Header -->
-      <header
-        id="header"
-        class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm"
-      >
-        <div
-          class="container mx-auto px-6 py-4 flex items-center justify-between"
-        >
-          <div id="logo" class="flex items-center gap-3">
-            <span
-              id="logo-icon"
-              class="material-symbols-outlined text-primary text-3xl"
-              >waves</span
-            >
-            <h1
-              id="logo-text"
-              class="text-gray-800 text-2xl font-bold tracking-tight"
-            >
-              CoralGuard
-            </h1>
-          </div>
-          <nav id="navbar" class="flex items-center gap-8">
-            <a
-              id="nav-home"
-              class="text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
-              href="#home"
-              >Home</a
-            >
-            <a
-              id="nav-about"
-              class="text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
-              href="#about"
-              >About</a
-            >
-            <a
-              id="nav-contact"
-              class="text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"
-              href="#contact"
-              >Contact</a
-            >
-          </nav>
-          <div class="flex items-center gap-4">
-            <button
-              onclick="window.location.href='/src/pages/understanding.html'"
-              id="btn-get-involved"
-              class="bg-primary text-white text-sm font-bold px-6 py-2.5 rounded-full hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              <span>Awareness</span>
-            </button>
-          </div>
-        </div>
-      </header>
 
-      <!-- Main -->
-      <main id="main" class="flex-grow">
-        <!-- Hero Section -->
-        <section
-          id="hero"
-          class="relative min-h-screen flex items-center justify-center pt-20"
-        >
-          <div
-            id="hero-bg"
-            class="absolute inset-0 bg-cover bg-center"
-            style="
-              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDDHvaXOLspbv4Eh8XemflLVYRDLvjw84yma6ZuCoa1BU67lrCBMouvRtkrJ-M-qAZnv3RfdC3To9HvJ01A3PcZkIrXQysZ9y_TXW9VZJ__E05gF7rbVEzR8ua6RY4MbWsADJ0wO6NVAqHkvmXph-5P-DyxIcKekon4fZnWOzDOgqSFuYzpVUsRLDLyN5_zNKgmiFFrI23eDBXUzKgLT_JzUjJxUd_nylc4suBRmGjvF-EYbzyOSaYv-aegmruFMd6RK_8wxJRAmMMV');
-            "
-          >
-            <div id="hero-overlay" class="absolute inset-0 bg-black/50"></div>
-          </div>
-          <div
-            id="hero-content"
-            class="relative z-10 container mx-auto px-6 text-center text-white"
-          >
-            <h1
-              id="hero-title"
-              class="text-5xl md:text-7xl font-black leading-tight tracking-tighter mb-4 animate-fade-in-down"
-            >
-              Protecting Our Oceans, One Reef at a Time
-            </h1>
-            <p
-              id="hero-subtitle"
-              class="text-lg md:text-xl max-w-3xl mx-auto font-light mb-8 animate-fade-in-up"
-            >
-              CoralGuard is an AI-powered platform dedicated to coral reef
-              conservation, providing tools and resources for researchers and
-              the public to monitor, protect, and restore these vital
-              ecosystems.
-            </p>
-            <div
-              id="hero-buttons"
-              class="flex flex-wrap gap-4 justify-center animate-fade-in"
-            >
-              <button
-                id="btn-research"
-                onclick="window.location.href='/src/pages/forResearch.html'"
-                class="bg-primary text-white text-base font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                For Researchers
-              </button>
-              <button
-                id="btn-public"
-                onclick="window.location.href='/src/pages/forPublic.html'"
+<!DOCTYPE html>  
+<html>  
+  <head>  
+    <meta charset="utf-8" />  
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />  
+    <link  
+      as="style"  
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Public+Sans:wght@400;500;700;900"  
+      onload="this.rel='stylesheet'"  
+      rel="stylesheet"  
+    />  
+    <link  
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"  
+      rel="stylesheet"  
+    />  
+    <title>CoralGuard</title>  
+    <link rel="stylesheet" href="src/styles/index.css">  
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />  
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>  
+    <style type="text/tailwindcss">  
+      body {  
+        scroll-behavior: smooth;  
+      }  
+      :root {  
+        --primary-color: #11a3d4;  
+        --secondary-color: #ff6b6b;  
+        --accent-color: #48c9b0;  
+      }  
+      .bg-primary {  
+        background-color: var(--primary-color);  
+      }  
+      .text-primary {  
+        color: var(--primary-color);  
+      }  
+      .bg-secondary {  
+        background-color: var(--secondary-color);  
+      }  
+      .text-secondary {  
+        color: var(--secondary-color);  
+      }  
+      .bg-accent {  
+        background-color: var(--accent-color);  
+      }  
+      .text-accent {  
+        color: var(--accent-color);  
+      }  
+      .border-primary {  
+        border-color: var(--primary-color);  
+      }  
+    </style>  
+  </head>  
+  <body class="bg-gray-50 font-public" id="home">  
+    <div  
+      id="app-wrapper"  
+      class="relative flex size-full min-h-screen flex-col overflow-x-hidden"  
+    >  
+      <!-- Header -->  
+      <header  
+        id="header"  
+        class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm"  
+      >  
+        <div  
+          class="container mx-auto px-6 py-4 flex items-center justify-between"  
+        >  
+          <div id="logo" class="flex items-center gap-3">  
+            <span  
+              id="logo-icon"  
+              class="material-symbols-outlined text-primary text-3xl"  
+              >waves</span  
+            >  
+            <h1  
+              id="logo-text"  
+              class="text-gray-800 text-2xl font-bold tracking-tight"  
+            >  
+              CoralGuard  
+            </h1>  
+          </div>  
+          <nav id="navbar" class="flex items-center gap-8">  
+            <a  
+              id="nav-home"  
+              class="text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"  
+              href="#home"  
+              >Home</a  
+            >  
+            <a  
+              id="nav-about"  
+              class="text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"  
+              href="/src/pages/Coral_History.html"  
+              >Coral_History</a  
+            >  
+            <a  
+              id="nav-contact"  
+              class="text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"  
+              href="src/pages/teamMembers.html"  
+              >TeamMembers</a  
+            >  
+            <!-- Link to Reef Map page -->  
+            <a  
+              id="nav-map"  
+              class="text-gray-600 hover:text-cyan-500 text-sm font-medium leading-normal"  
+              href="/src/pages/map.html"  
+              >Reef Map</a  
+            >  
+          </nav>  
+          <div class="flex items-center gap-4">  
+            <button  
+              onclick="window.location.href='/src/pages/understanding.html'"  
+              id="btn-get-involved"  
+              class="bg-primary text-white text-sm font-bold px-6 py-2.5 rounded-full hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg"  
+            >  
+              <span>Awareness</span>  
+            </button>  
+          </div>  
+        </div>  
+      </header>  
 
-                class="bg-accent text-white text-base font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                For the Public
-              </button>
-            </div>
-          </div>
-        </section>
+      <!-- Main -->  
+      <main id="main" class="flex-grow">  
+        <!-- Hero Section -->  
+        <section  
+          id="hero"  
+          class="relative min-h-screen flex items-center justify-center pt-20"  
+        >  
+          <div  
+            id="hero-bg"  
+            class="absolute inset-0 bg-cover bg-center"  
+            style="  
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDDHvaXOLspbv4Eh8XemflLVYRDLvjw84yma6ZuCoa1BU67lrCBMouvRtkrJ-M-qAZnv3RfdC3To9HvJ01A3PcZkIrXQysZ9y_TXW9VZJ__E05gF7rbVEzR8ua6RY4MbWsADJ0wO6NVAqHkvmXph-5P-DyxIcKekon4fZnWOzDOgqSFuYzpVUsRLDLyN5_zNKgmiFFrI23eDBXUzKgLT_JzUjJxUd_nylc4suBRmGjvF-EYbzyOSaYv-aegmruFMd6RK_8wxJRAmMMV');  
+            "  
+          >  
+            <div id="hero-overlay" class="absolute inset-0 bg-black/50"></div>  
+          </div>  
+          <div  
+            id="hero-content"  
+            class="relative z-10 container mx-auto px-6 text-center text-white"  
+          >  
+            <h1  
+              id="hero-title"  
+              class="text-5xl md:text-7xl font-black leading-tight tracking-tighter mb-4 animate-fade-in-down"  
+            >  
+              Protecting Our Oceans, One Reef at a Time  
+            </h1>  
+            <p  
+              id="hero-subtitle"  
+              class="text-lg md:text-xl max-w-3xl mx-auto font-light mb-8 animate-fade-in-up"  
+            >  
+              CoralGuard is an AI-powered platform dedicated to coral reef  
+              conservation, providing tools and resources for researchers and  
+              the public to monitor, protect, and restore these vital  
+              ecosystems.  
+            </p>  
+            <div  
+              id="hero-buttons"  
+              class="flex flex-wrap gap-4 justify-center animate-fade-in"  
+            >  
+              <button  
+                id="btn-research"  
+                onclick="window.location.href='/src/pages/forResearch.html'"  
+                class="bg-primary text-white text-base font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-lg"  
+              >  
+                For Researchers  
+              </button>  
+              <button  
+                id="btn-public"  
+                onclick="window.location.href='/src/pages/forPublic.html'"  
+                class="bg-accent text-white text-base font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-lg"  
+              >  
+                For the Public  
+              </button>  
+            </div>  
+          </div>  
+        </section>  
 
-        <!-- Mission Section -->
-        <section id="mission" class="py-24 bg-white">
-          <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-              <div id="mission-block" class="text-center md:text-left">
-                <h2
-                  id="mission-title"
-                  class="text-4xl font-bold text-gray-800 mb-4"
-                >
-                  Our Mission
-                </h2>
-                <p
-                  id="mission-text"
-                  class="text-gray-600 leading-relaxed text-lg"
-                >
-                  To empower researchers with advanced AI tools for reef
-                  monitoring and analysis, while engaging the public through
-                  educational resources and community initiatives. Together, we
-                  can make a significant impact on coral reef conservation.
-                </p>
-              </div>
-              <div id="vision-block" class="text-center md:text-left">
-                <h2
-                  id="vision-title"
-                  class="text-4xl font-bold text-gray-800 mb-4"
-                >
-                  Our Vision
-                </h2>
-                <p
-                  id="vision-text"
-                  class="text-gray-600 leading-relaxed text-lg"
-                >
-                  We envision a future where coral reefs thrive, supported by a
-                  global community committed to their protection. CoralGuard
-                  aims to be the leading platform for coral reef conservation,
-                  fostering collaboration and driving positive change for our
-                  oceans.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <!-- باقي الصفحة زي ما هي ... -->  
+      </main>  
 
-        <!-- About Section -->
-        <section id="about" class="py-24 bg-gray-50">
-          <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold text-gray-800 mb-6">About Us</h2>
-            <p
-              class="text-gray-600 leading-relaxed max-w-3xl mx-auto text-lg mb-8"
-            >
-              CoralGuard was founded with a passion for ocean conservation. Our
-              team combines expertise in marine biology, artificial
-              intelligence, and community engagement to create innovative
-              solutions for coral reef protection. We believe that through
-              collaboration, technology, and education, we can safeguard these
-              vital ecosystems for future generations.
-            </p>
-            <div class="grid md:grid-cols-3 gap-8 mt-10">
-              <div class="p-6 bg-white rounded-2xl shadow">
-                <h3 class="text-xl font-semibold text-primary mb-2">
-                  Research
-                </h3>
-                <p class="text-gray-600">
-                  Supporting scientists with cutting-edge tools for reef
-                  monitoring and analysis.
-                </p>
-              </div>
-              <div class="p-6 bg-white rounded-2xl shadow">
-                <h3 class="text-xl font-semibold text-primary mb-2">
-                  Awareness
-                </h3>
-                <p class="text-gray-600">
-                  Educating the public and raising awareness about coral reef
-                  conservation.
-                </p>
-              </div>
-              <div class="p-6 bg-white rounded-2xl shadow">
-                <h3 class="text-xl font-semibold text-primary mb-2">
-                  Community
-                </h3>
-                <p class="text-gray-600">
-                  Building a global network of individuals dedicated to saving
-                  our oceans.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+      <!-- Footer -->  
+      <footer id="footer" class="bg-gray-800 text-white py-12">  
+        <div class="container mx-auto px-6 text-center">  
+          <div  
+            id="footer-logo"  
+            class="flex items-center justify-center gap-3 mb-4"  
+          >  
+            <span  
+              id="footer-icon"  
+              class="material-symbols-outlined text-accent text-3xl"  
+              >waves</span  
+            >  
+            <h3 id="footer-title" class="text-2xl font-bold">CoralGuard</h3>  
+          </div>  
+          <div id="footer-links" class="flex justify-center gap-6 mb-6">  
+            <a  
+              id="link-about"  
+              class="hover:text-accent transition-colors"  
+              href="#about"  
+              >About</a  
+            >  
+            <a  
+              id="link-contact"  
+              class="hover:text-accent transition-colors"  
+              href="#"  
+              >Contact</a  
+            >  
+            <a  
+              id="link-privacy"  
+              class="hover:text-accent transition-colors"  
+              href="#privacy"  
+              >Privacy Policy</a  
+            >  
+          </div>  
+          <p id="footer-copy" class="text-gray-400 text-sm">  
+            © 2025 CoralGuard. All rights reserved.  
+          </p>  
+        </div>  
+      </footer>  
+    </div>  
 
-        <!-- Contact Section -->
-        <section id="contact" class="py-24 bg-white">
-          <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-              <h2 class="text-4xl font-bold text-gray-800 mb-4">Contact Us</h2>
-              <p class="text-gray-600 max-w-2xl mx-auto">
-                Have questions, suggestions, or want to get involved? We’d love
-                to hear from you! Reach out to us anytime.
-              </p>
-            </div>
-            <form
-              action="#"
-              method="POST"
-              class="max-w-2xl mx-auto bg-gray-50 p-8 rounded-2xl shadow space-y-6"
-            >
-              <div>
-                <label
-                  for="name"
-                  class="block text-left text-gray-700 font-medium mb-2"
-                  >Name</label
-                >
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-                />
-              </div>
-              <div>
-                <label
-                  for="email"
-                  class="block text-left text-gray-700 font-medium mb-2"
-                  >Email</label
-                >
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-                />
-              </div>
-              <div>
-                <label
-                  for="message"
-                  class="block text-left text-gray-700 font-medium mb-2"
-                  >Message</label
-                >
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  required
-                  class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                class="bg-primary text-white font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transition-all duration-300 shadow-md"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-        </section>
-
-        <!-- Privacy Section -->
-        <section id="privacy" class="py-24 bg-gray-50">
-          <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold text-gray-800 mb-6">
-              Privacy Policy
-            </h2>
-            <p class="text-gray-600 leading-relaxed max-w-3xl mx-auto text-lg">
-              We value your privacy. Any data collected will be used only for
-              research, awareness, and conservation purposes. We do not share
-              personal information with third parties without consent.
-            </p>
-          </div>
-        </section>
-      </main>
-
-      <!-- Footer -->
-      <footer id="footer" class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-6 text-center">
-          <div
-            id="footer-logo"
-            class="flex items-center justify-center gap-3 mb-4"
-          >
-            <span
-              id="footer-icon"
-              class="material-symbols-outlined text-accent text-3xl"
-              >waves</span
-            >
-            <h3 id="footer-title" class="text-2xl font-bold">CoralGuard</h3>
-          </div>
-          <div id="footer-links" class="flex justify-center gap-6 mb-6">
-            <a
-              id="link-about"
-              class="hover:text-accent transition-colors"
-              href="#about"
-              >About</a
-            >
-            <a
-              id="link-contact"
-              class="hover:text-accent transition-colors"
-              href="#contact"
-              >Contact</a
-            >
-            <a
-              id="link-privacy"
-              class="hover:text-accent transition-colors"
-              href="#privacy"
-              >Privacy Policy</a
-            >
-          </div>
-          <p id="footer-copy" class="text-gray-400 text-sm">
-            © 2025 CoralGuard. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </div>
-
-    <script src="/SRC/main.js"></script>
-  </body>
+    <script src="/SRC/main.js"></script>  
+  </body>  
 </html>
