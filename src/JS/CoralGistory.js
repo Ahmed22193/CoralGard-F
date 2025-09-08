@@ -57,6 +57,39 @@ async function fetchData() {
         localStorage.setItem("coralData", JSON.stringify(newData));
         renderData(newData);
       }
+    } else if (res.status === 404) {
+      document.getElementById("loader").classList.add("d-none");
+      document.getElementById("Error_message").innerHTML = ``;
+      document.getElementById(
+        "Error_message"
+      ).innerHTML = `<div id="dataContainer" 
+     class="d-flex justify-content-center align-items-center text-center border rounded p-4 shadow-sm" 
+     style="height: 160px; background-color: #f8d7da;">
+  
+  <h1 class="text-danger fs-4 fw-semibold mb-0">
+    There is no record yet.
+  </h1>
+</div>
+`;
+    } else if (res.status === 401) {
+      document.getElementById("loader").classList.add("d-none");
+      document.getElementById("Error_message").innerHTML = ``;
+      document.getElementById(
+        "Error_message"
+      ).innerHTML = `<div id="dataContainer" 
+     class="d-flex flex-column justify-content-center align-items-center text-center border border-danger rounded p-4 shadow" 
+     style="height: 160px; background-color: #f8d7da;">
+  
+  <h2 class="text-danger mb-3 fs-5 fw-semibold">
+    You are not authorized, please log in first.
+  </h2>
+
+  <a href="../pages/Auth.html" class="btn btn-danger">
+    Login
+  </a>
+</div>
+
+`;
     }
   } catch (error) {
     console.error("Error fetching data:", error);
